@@ -1,0 +1,116 @@
+%%BeginIpePreamble
+\newcommand{\pnt}{p}
+\newcommand{\query}{q}
+\newcommand{\prob}{\alpha}
+\newcommand{\val}{v}
+\newcommand{\notLPr}{\beta}
+\newcommand{\notPr}{\pi}
+\newcommand{\probMV}{\gamma}
+\newcommand{\exM}{\mu}
+\newcommand{\mlM}{\lambda}
+\newcommand{\range}{\rho}
+\newcommand{\rect}{\range}
+\newcommand{\rectangle}{\rho}
+\newcommand{\appr}{\eta}
+\newcommand{\PNT}{P}
+\newcommand{\VALS}{V}
+\newcommand{\maxm}{f}
+
+
+%\renewcommand{\Re}{{\rm I\!\hspace{-0.025em} R}}
+\renewcommand{\Re}{\mathbb{R}}
+
+\newcommand{\PntSet}{\mathsf{P}}
+\newcommand{\Sample}{\mathsf{R}}
+\newcommand{\LocSample}{\mathsf{Q}}
+\newcommand{\Prob}[1]{\mathbf{Pr\big[} #1 \mathbf{\big]}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\brc}[1]{\{ #1 \}}
+\newcommand{\CH}[1]{\mathcal{CH}(#1)}
+\newcommand{\IndicatorX}[1]{\mathbb{I}[ #1 ]}
+\newcommand{\cardin}[1]{| #1 | }
+\newcommand{\floor}[1]{\left \lfloor #1 \right \rfloor}
+\newcommand{\ceiling}[1]{\left \lceil #1 \right \rceil}
+\newcommand{\Interior}[1]{\mathrm{relint}(#1)}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Expec}[1]{\mathbf{E}\left [ #1 \right ]}
+
+\newcommand{\polylog}{\mathop {\mathrm{polylog}}}
+
+%\newcommand{\polylog}{\mathrm{polylog}}
+\newcommand{\argmax}{\arg\!\max}
+%%EndIpePreamble
+\newcommand{\seclab}[1]{\label{section:#1}}
+\newcommand{\secref}[1]{Section~\ref{section:#1}}
+
+
+\newcommand{\apndxlab}[1]{\label{appendix:#1}}
+\newcommand{\apndxref}[1]{Appendix~\ref{appendix:#1}}
+
+\newcommand{\thmlab}[1]{\label{thm:#1}}
+\newcommand{\thmref}[1]{Theorem~\ref{thm:#1}}
+
+\newcommand{\lemlab}[1]{\label{lemma:#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{lemma:#1}}
+
+\newcommand{\corlab}[1]{\label{corollary:#1}}
+\newcommand{\corref}[1]{Corollary~\ref{corollary:#1}}
+
+\newcommand{\itemlab}[1]{\label{item:#1}}
+\newcommand{\itemref}[1]{item~\ref{item:#1}}
+
+
+\newcommand{\figlab}[1]{\label{fig:#1}}
+\newcommand{\figref}[1]{Figure~\ref{fig:#1}}
+
+\newcommand{\algolab}[1]{\label{algorithm:#1}}
+\newcommand{\algoref}[1]{Algorithm~\ref{algorithm:#1}}
+
+
+\newcommand{\Eqlab}[1]{\label{equation:#1}}
+\newcommand{\Eqref}[1]{Equation~\ref{equation:#1}}
+
+
+\newcommand{\conjlab}[1]{\label{conjecture:#1}}
+\newcommand{\conjref}[1]{Conjecture~\ref{conjecture:#1}}
+
+\newcommand{\problab}[1]{\label{problem:#1}}
+\newcommand{\probref}[1]{Problem~\ref{problem:#1}}
+
+\newtheorem{problem}{Problem}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+%\newenvironment{proof}{\trivlist\item[]\emph{Proof}:}%
+%                  {\unskip\nobreak\hskip 1em plus 1fil\nobreak%
+%                           \rule{2mm}{2mm}%$\Box$
+%                           \parfillskip=0pt%
+%                           \endtrivlist}
+
+\newtheorem{remark}{Remark}[theorem]
+\theoremstyle{remark}{\theorembodyfont{\rm}
+
+\newtheorem{conjecture}{Conjecture}[theorem]
+
+
+%\newcommand{\qed}{\nobreak \ifvmode \relax \else
+%      \ifdim\lastskip<1.5em \hskip-\lastskip
+%      \hskip1.5em plus0em minus0.5em \fi \nobreak
+%      \vrule height0.75em width0.5em depth0.25em\fi}
+
+\newcommand{\EM}{\textsf{EM}\xspace}
+\newcommand{\MLM}{\textsf{MLM}\xspace}
+\newcommand{\remove}[1]{}
+\def\etal{\textsl{et~al.}}
+
+\makeatletter
+\long\def\@makecaption#1#2{
+   \vskip 10pt
+   \setbox\@tempboxa\hbox{{\footnotesize \textbf{#1.} #2}}
+   \ifdim \wd\@tempboxa >\hsize         % IF longer than one line:
+       {\footnotesize \textbf{#1.} #2\par}% THEN set as ordinary paragraph.
+     \else                              %   ELSE  center.
+       \hbox to\hsize{\hfil\box\@tempboxa\hfil}
+   \fi}
+\makeatother
+

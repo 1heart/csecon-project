@@ -1,19 +1,78 @@
-\documentclass[a4paper,10pt]{article}
-\usepackage{setspace}
-\usepackage{fancyvrb}
-\usepackage{graphicx}
-\doublespacing
+%\documentclass[10pt]{article}
+\documentclass{sig-alternate-10}
 
-\title{
-Proxy voting\\
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{xspace}
+
+\usepackage{euscript}
+\usepackage{amstext}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{paralist}
+\usepackage{theorem}
+%\usepackage[boxed]{algorithm2e}
+\usepackage{notes}
+\usepackage[]{hyperref}
+\usepackage[final]{microtype}
+\usepackage{picins}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{pdfpages}
+\usepackage{mathtools}
+
+%\usepackage[margin=1in]{geometry}
+%\usepackage{mathpazo}
+%\usepackage{geometry}
+%\usepackage[top=1.25in,bottom=1.25in,left=1.25in,right=1.25in]{geometry}
+%\usepackage{geometry}
+\setlength{\paperheight}{11in}
+\setlength{\paperwidth}{8.5in}
+\usepackage[
+  pass,%keep layout unchanged
+  % showframe,% show the layout
+]{geometry}
+
+%improve trypography
+
+\usepackage{fixltx2e}
+\usepackage{fullpage}
+\usepackage{xspace}
+
+\def\mparagraph#1{\par\medskip\noindent\textbf{#1.}\quad}
+
+
+\input{prelim}
+
+  \begin{document}
+  
+\title{Cycle Breaking in Proxy Voting
 }
-\author{Ben Chesnut, Jeremy Fox, Yixin Lin}
 \date{May 1, 2016}
 
-\begin{document}
+\author{
+Ben Chesnut, Jeremy Fox, Yixin Lin \thanks{%
+Vince Conitzer, Department of Computer Science, Duke University, Durham, NC
+27708-0129, USA;}}
 
 \maketitle
+%\input{abstract}
+\input{Introduction}
 
-\section{Introduction to proxy voting}
+\input{Previous}
+\input{Results}
+\input{Conclusion}
+
+{\small		
+\bibliographystyle{abbrv}
+\bibliography{mlm}
+}
 
 \end{document}
