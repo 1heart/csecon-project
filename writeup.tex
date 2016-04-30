@@ -2,6 +2,7 @@
 
 \usepackage{amssymb,amsmath,amsthm,amsfonts}
 \usepackage{mathtools}
+\usepackage{kpfonts}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -125,13 +126,45 @@ Suppose that $G$ does not contain a cycle. Then $G$ must consist only of trees, 
 \end{proof}
 
 \begin{theorem} 
+\label{CFLIT}
 There exists no system $S$ for which the properties Choice of Role, Enfranchisement, and Voters Choose simultaneously hold.
 \end{theorem}
 \begin{proof}
-Let us assume that all voters proxy, which is allowed under Choice of Rule. We have from Lemma \ref{cyclesform} that $G$ must contain a cycle. 
+Let us assume that all voters proxy, which is allowed under Choice of Role. We have from Lemma \ref{cyclesform} that $G$ must contain a cycle. 
 \end{proof}
 
 \subsection{Centrality}
+
+As we mentioned in the previous section, one way to deal with with cycles in proxy voting is through \textbf{preference elicitation} -- that is, querying voters to find out what their true preferences are, and changing their proxy into an actual vote. This leads us to an important question: How do we decide who to query? Clearly, we seek to minimize the number of users queried (this adheres most closely to Choice of Role, as well as minimizing operating costs), which leads us to assume that for each pseudotree in the graph, we should query only one voter --- there vote will be allocated to the rest of the pseudotree. Thus, our task is as follows: for one pseudotree, determine the voter best suited to represent the whole tree. We assume that the only information we have is to whom someone proxied -- thus, we must determine who to query based solely on the structure of the graph. In order to do this, we make one more assumption: A proxy from $A$ to $B$ represents a vote from $A$ in $B$'s competence. Our task now is to choose the most competent voter in each connected competent --- a task for which centrality measures from social network theory are uniquely suited.
+
+A centrality measure intuitively captures the idea of the most important vertex within a graph -- in a social network, centrality measures the most influential nodes in the network.\cite{centrality}\cite{cwiki} Centrality is a well established notion, having been used in various network analyses ranging from which people are most likely to spread disease to analyzing dominance in primate communities. Furthermore, centrality has already been successfully used to break cycles in a pseudoforest.\cite{wikipedia} We draw upon all of this work to propose the following: Centrality serves as an ideal tool with which to break cycles. 
+
+Let $A$ be the adjacency matrix of $G$. If $C_{Katz}(i)$ denotes the Katz Centrality of a node $i$, then $C_{Katz}(i)$ is defined as follows:
+\theoremstyle{definition}
+\begin{definition}{Katz Centrality:}
+$C_{Katz}(i) = \sum\limits_{k=1}^{\infty}\sum\limits_{j=1}^n\alpha^k(A^k)_{ji}$
+%\sum\limits_{j=1)$%^n\alpha^k(A^k)_{ji}$
+\end{definition}
+
+A vector of the Katz Centrality for all nodes in the graph is expressed as follows:
+
+\begin{theorem}
+$\overrightarrow{C_{Katz}}  = ((I - \alpha A^T)^{-1}-I)\vec{I}$
+\end{theorem}
+
+\begin{theorem}
+$\overrightarrow{C_{Katz}}$ can be computed directly in time $O(n^{2.373})$
+\end{theorem}
+\begin{proof}
+The fastest known algorithm for matrix inverse runs in time $O(n^2.373)$. Matrix addition can be done in linear time -- thus, the inverse takes the longest of all operations in this equation, so the runtime is equal to that of the matrix inverse.
+\end{proof}
+
+Using dynamic programming and exploiting the graph structure of the pseudoforest, we can compute $\overrightarrow{C_{Katz}}$ in linear time.
+\begin{proof}
+\end{proof}
+
+
+
 \section{Conclusion}
 
 \subsection{Future Work}
@@ -152,6 +185,24 @@ Jan Behrens and Bjorn Swierczek
 \textit{Preferential Delegation and the Problem of Negative Voting Weight}. 
 Berlin, January 23, 2015.
 \\\texttt{http://www.liquid-democracy-journal.org/}
+
+
+\bibitem{centrality}
+Linton C. Freeman
+\textit{Centrality in Social Networks: Conceptual Clarification}
+The Netherlands, 2878.
+\\\texttt{http://moreno.ss.uci.edu/27.pdf}
+
+\bibitem{cwiki}
+M.E.J. Newman
+\textit{Networks: An Introduction}
+Oxford, UK: Oxford University Press, 2010.
+
+\bibitem{wikipedia}
+Paolo Boldi and Corrado Monti
+\textit{Cleansing Wikipedia Categories using Centrality}
+IW3C2, Montreal, Quebec, Canada, April 15, 2016
+\\\texttt{http://snap.stanford.edu/wikiworkshop2016/papers/}
 
 \end{thebibliography}
 
