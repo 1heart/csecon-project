@@ -46,13 +46,27 @@ The proof is trivial.
 
 There are cases where we can guarantee no cycles, even reasonably common cases.
 
-For example, let us define a competence measure $C_i \in \mathbb{R}$ for $ i \in V$, which is the objective measure of a voter $i$'s competence in voting, and $c_ij$ for $i, j \in V$ for the perceived competence measure of voter $j$ perceived by voter $i$. If we assume that $i$ will 
+Let us define a competence measure $C_i \in \mathbb{R}$ for $ i \in V$, which is the objective measure of voter $i$'s competence in voting. Let the perceived competence measure of voter $j$ perceived by voter $i$ be $c_{ij}$ for $i, j \in V$ . 
 
-\subsection{Cycle Formation}
+At the ideal limit where actual competence equals perceived competence, we have the following monotonicity theorem:
 
 \begin{theorem}
 
+Assume that $i$ will only proxy its vote to $j$ iff $c_{ij} > c_{ii}$, i.e. a voter proxies to a target only if the target has a greater perceived competence than the voter.
+
+If the actual competence equals the perceived competence, i.e. $C_i = c_{ji}$ $\forall j, i \in V$, then there cannot be cycles in this graph.
+
 \end{theorem}
+
+\begin{proof}
+
+Proof by contradiction:
+
+Suppose there exists $Ci$ for $i \in \{1, 2, .. n\}$ for which nodes $i$ form a cycle $1 \rightarrow 2 \rightarrow ... n \rightarrow 1$. Then $C_1 < C_2 < ... C_n < C_1$. But the real numbers are totally ordered and therefore transitive, so this is impossible.
+
+\end{proof}
+
+\subsection{Cycle Formation}
 
 \begin{theorem}
 CFLIT!!!!
