@@ -1,2 +1,5 @@
 \section{Conclusion}
 \seclab{conclusion}
+
+\subsection{Future Work}
+In this paper, we explored the idea of using centrality measures to break cycles, our reasoning being that a proxy to someone is an implicit vote of confidence in that person's expertise. If we view the graph of proxy votes as a graph where directed edges represent votes of confidence, then centrality is the natural choice to choose the experts in the graph. However, centrality measures do not require that nodes only "proxy" to one other node --- having this as a requirement in proxy voting limits the information we can retain from voters, as it forces the graph to be unnecessarily sparse. One potential way to get around this problem is through the use of \textit{confidence networks}, where voters are allowed to list not just one but multiple other voters in which they feel confident. In this case, centrality measures would be used, not as a last-resort means of breaking a cycle, but as an intended way to identify the experts in a group. 
