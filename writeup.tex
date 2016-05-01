@@ -28,9 +28,23 @@ Vince Conitzer, Department of Computer Science, Duke University, Durham, NC
 
 \section{Introduction}
 
-\subsection{Introduction to Proxy Voting}
+Classical voting schemes are an important part of our society but are fraught with problems, including problematic voter turnout, ill-informed voters, and illiquid representation. Proxy voting is a voting scheme that aims to alleviate such problems by providing a way for voters to delegate their vote to another voter. However, proxy voting comes with its own set of problems, especially when cycles are formed in voting delegation. We formalize proxy voting using graph theory and explore the issues of cycle-breaking, deriving an impossibility result and an approach to cycle-breaking using concepts social network theory.
 
 \subsection{Motivation}
+
+\subsubsection{Problems with current voting schemes}
+
+Current voting schemes underly the foundations of government and society, but often come with systemic issues. 
+
+For example, voter turnout may be problematic due to a variety of issues. This is empirically true in the US voting system\cite{turnout}, which has lower voter turnout than most established democracies. 
+
+Rational ignorance\cite{rationalIgnorance}, or the concept that it may be rational to forgo acquiring information depending on the costs incurred during acquisition, may be a factor. Regardless of the rationality behind it, ill-informed voting is a possibility difficult to avoid without raising the specter of literacy tests and their associated history.
+
+Finally, the current voting scheme is has illiquid representation. There is arbitrary pooling and condensing of voting from systems like the US electoral college and easily-gerrymandered district boundaries, where external factors magnify and dilute the voting power of certain constituents over others.
+
+\subsubsection{Introduction to Proxy Voting}
+
+Proxy voting is the voting scheme that one voter can delegate their voting power to another. This simple idea allows the sidestepping of many of the previous issues. The main reason is that it lowers the barrier to becoming a responsible voter drastically; to become a fully informed active voter is much harder than delegating to simply someone who is more informed. This recursive process has the natural tendency to shift voting power to more informed voters. In this sense, it is an extension of the idea of a republic with elected representatives, as opposed to a direct democracy.
 
 \section{Previous Work}
 
@@ -129,7 +143,7 @@ A centrality measure intuitively captures the idea of the most important vertex 
 
 Now, we can describe a simple cycle breaking algorithm: After all votes are cast, compute the centrality of every node in a cycle. For every pseudotree, query the node in the pseudo tree who the centrality measure ranks the highest. Use the vote of this queried node to represent the vote of every other node in the pseudotree.
 
-Although any centrality measure could be used to rank nodes in a pseudotree, here we propose the use of Katz Centrality as we feel it is best suited to the nature of proxy voting. Katz Centrality ranks nodes proportional to the number of nodes in their subtree, while penalizing the contribution of distant nodes
+Although any centrality measure could be used to rank nodes in a pseudotree, here we propose the use of Katz Centrality as we feel it is best suited to the nature of proxy voting. Katz Centrality ranks nodes proportional to the number of nodes in their subtree, while penalizing the contribution of distant nodes.
 
 Let $A$ be the adjacency matrix of $G$, and let $\alpha \in (0,1)$ be some discounting factor. If $C_{Katz}(i)$ denotes the Katz Centrality of a node $i$, then $C_{Katz}(i)$ is defined as follows:
 \theoremstyle{definition}
@@ -172,6 +186,13 @@ In this paper, we explored the idea of using centrality measures to break cycles
 In this paper, we explained the motivation behind proxy voting and explored the aspect of cycles --- why they form and how to break them. Ultimately, in order to implement a proxy voting system, we need a way to handle cycles. Until now, the only method proposed to deal with cycles involved granting them zero voting-power. By proposing a cycle-breaking method that does not disenfranchise voters in a cycle, we provide allow for the use of proxy voting in situations where voters would be upset if their votes were discarded, such as modern political elections.
 
 \begin{thebibliography}{9}
+
+\bibitem{turnout}
+Jackman RW. \textit{Political institutions and voter turnout in the industrial democracies}. American Political Science Review. 1987 Jun 1;81(02):405-23.
+
+\bibitem{rationalIgnorance}
+Downs. (1957), \textit{An Economic Theory of Democracy}; New York: Harper \& Brothers, 1957; p. 244-46, 266-71
+
 \bibitem{preferential} 
 Jan Behrens and Bjorn Swierczek
 \textit{Preferential Delegation and the Problem of Negative Voting Weight}. 
