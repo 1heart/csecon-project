@@ -48,10 +48,12 @@ Proxy voting is the voting scheme that one voter can delegate their voting power
 
 \section{Previous Work}
 
+Though proxy voting is a relatively new notion, inspired by the advancement of social networking theory and large social networks such as Facebook, Twitter, and LinkedIn, a significant amount of research from a wide range of academic angles has been put into this idea. Different works include exploring ways of implementing proxy voting systems on a network using cryptography \cite{ben1}, axiomatic analysis of proxy voting and desired properties of a delegative voting mechanism \cite{ben2}, and mathematical and algorithmic analysis of a proxy voting system in the form of graph theory \cite{ben3}. In our paper, we bridge these last two ideas by defining a set of desired properties of a delegative voting scheme, showing that it is impossible to devise a proxy voting mechanism that meets all of the proposed criteria, and developing a mechanism that most optimally satisfies these properties while remaining computationally efficient.
+
 
 \section{Our Work}
 
-We start with some notation. Let $a \rightarrow b$ denote that voter $a$ proxies to voter $b$. We let $\bb{O}$ denote a total order over the set of all voters. Let $G = (V,E)$ denote the graph of proxy votes, where $V$ is the set of all voters, and $E$ is the set of all edges.
+We start with some notation. Let $a \rightarrow b$ denote that voter $a$ proxies to voter $b$.  Let $G = (V,E)$ denote the graph of proxy votes, where $V$ is the set of all voters, and $E$ is the set of all edges.
 
 \subsection{Formalization as Graph Theory}
 To visualize and analyze a proxy voting system, we can represent the system as a graph, where each voter is a node having weight 1 and each proxy vote is a directed edge pointing from the proxying voter to the voter who is being proxied to. As such, voting power flows between nodes along edge paths; each voter has voting power equal to its own weight of 1, plus the sum of the voting power of the nodes pointing to it. We can formally define the voting power $p(v)$ of voter $v$ recursively:
@@ -65,7 +67,7 @@ Furthermore, we can define the voting power $P(Q)$ of a set $Q$ as follows:
 
 \theoremstyle{definition}
 \begin{definition}{Voting Power of a set:}
-For $Q \subseteq V, P(Q)$ is the total number of votes cast from $Q$.
+For $Q \subseteq V, P(Q)$ is the sum of the voting power of the sinks in $Q$.
 \end{definition}
 
 
@@ -114,7 +116,7 @@ $S$ exhibits Enfranchisement if $\forall a \in V, P(V) > P(V\setminus\{a\})$
 \end{definition}
 
 \theoremstyle{definition}
-\begin{definition}{Voters Choose:}
+\begin{definition}{Reasonable Candidate:}
 For a voter $v$, if $v$ voted, let $A_v$ denote the set of candidates for which $v$ voted. If $v$ did not vote, let $A_v$ denote the set of candidates for which $v$ would vote if $v$ were to vote. Let $c$ denote the candidate chosen by the voting rule in $S$. $S$ exhibits Voters Choose if $c \in \smashoperator{\bigcup\limits_{v \in V}}A_v$ 
 \end{definition}
 
@@ -137,7 +139,7 @@ Let us assume that all voters proxy, which is allowed under Choice of Role. We h
 
 \subsection{Centrality}
 
-As we mentioned in the previous section, one way to deal with with cycles in proxy voting is through \textbf{preference elicitation} -- that is, querying voters to find out what their true preferences are, and changing their proxy into an actual vote. This leads us to an important question: How do we decide who to query? Clearly, we seek to minimize the number of users queried (this adheres most closely to Choice of Role, as well as minimizing operating costs), which leads us to assume that for each pseudotree in the graph, we should query only one voter --- there vote will be allocated to the rest of the pseudotree. Thus, our task is as follows: for one pseudotree, determine the voter best suited to represent the whole tree. We assume that the only information we have is to whom someone proxied -- thus, we must determine who to query based solely on the structure of the graph. In order to do this, we make one more assumption: A proxy from $A$ to $B$ represents a vote from $A$ in $B$'s competence. Our task now is to choose the most competent voter in each connected competent --- a task for which centrality measures from social network theory are uniquely suited.
+As we mentioned in the previous section, one way to deal with cycles in proxy voting is through \textbf{preference elicitation} -- that is, querying voters to find out what their true preferences are, and changing their proxy into an actual vote. This leads us to an important question: How do we decide who to query? Clearly, we seek to minimize the number of users queried (this adheres most closely to Choice of Role, as well as minimizing operating costs), which leads us to assume that for each pseudotree in the graph, we should query only one voter --- there vote will be allocated to the rest of the pseudotree. Thus, our task is as follows: for one pseudotree, determine the voter best suited to represent the whole tree. We assume that the only information we have is to whom someone proxied -- thus, we must determine who to query based solely on the structure of the graph. In order to do this, we make one more assumption: A proxy from $A$ to $B$ represents a vote from $A$ in $B$'s competence. Our task now is to choose the most competent voter in each connected competent --- a task for which centrality measures from social network theory are uniquely suited.
 
 A centrality measure intuitively captures the idea of the most important vertex within a graph -- in a social network, centrality measures the most influential nodes in the network.\cite{centrality}\cite{cwiki} Centrality is a well established notion, having been used in various network analyses ranging from which people are most likely to spread disease to analyzing dominance in primate communities. Furthermore, centrality has already been successfully used to break cycles in a pseudoforest.\cite{wikipedia} We draw upon all of this work to propose the following: Centrality serves as an ideal tool with which to break cycles. 
 
@@ -165,8 +167,14 @@ $\overrightarrow{C_{Katz}}$ can be computed directly in time $O(n^{2.373})$
 The fastest known algorithm for matrix inverse runs in time $O(n^2.373)$. Matrix addition can be done in linear time -- thus, the inverse takes the longest of all operations in this equation, so the runtime is equal to that of the matrix inverse.
 \end{proof}
 
-Using dynamic programming and exploiting the graph structure of the pseudoforest, we can compute $\overrightarrow{C_{Katz}}$ in linear time.
+We can, however, exploit the structure of our graph to greatly improve this runtime bound:
+
+\begin{theorem}
+For a pseudoforest nodes in cycles in a pseudoforest, $\overrightarrow{C_{Katz}}$ can be computed in linear time.
+\end{theorem}
+
 \begin{proof}
+Let $T$ be a pseudotree in $G$ with a cycle $C$ of length $k$ inside $T$. Let $c_i$ be a node in $C$, and let $t_i$ be the tree rooted at  $c_i$ that has no nodes in $C$ other than $c_i$. Clearly we can calculate the centrality of this tree in linear time --- thus, we can compress the tree into a single node connected to $c_i$ that stores the centrality of the entire tree. We can call this node $d_i$. Since we will eventually calculate the centrality of $c_i$ by multiplying $d_i$ by $\alpha$ and adding it to $c_i$, we can go ahead and store the value of $d_i$ in $c_i$. Thus, we can transform $T$ into an equivalent cycle $C'$, where $c_i'$ represents a node in $C'$, as follows: $\forall c_i \in C, c_i' = 1 + \alpha d_i$.  We have now reduced our problem to that of calculating the centrality of a cycle, which can be done as follows. Let $C$ be the following cycle: $c_1 \rightarrow c_2 \rightarrow c_3 \rightarrow ... \rightarrow c_{k-1} \rightarrow c_k \rightarrow c_1$.  We calculate 
 \end{proof}
 
 
@@ -174,13 +182,13 @@ Using dynamic programming and exploiting the graph structure of the pseudoforest
 \section{Conclusion}
 
 \subsection{Future Work}
-\begin{itemize}
-\item \textit{Confidence Networks}: Relax the constraints of proxy voting to allow voters to proxy to multiple people. Then, use centrality measures, not as a means of breaking cycles, but as a way to identify experts in a group.
-
-\item \textit{Behavioral Model of Voting}: What factors lead people to proxy? Quantify various aspects such as confidence, trust, bias, and knowledge and generate functions that say to whom each voter should proxy.
-\end{itemize}
+\subsubsection{Confidence Networks}
 
 In this paper, we explored the idea of using centrality measures to break cycles, our reasoning being that a proxy to someone is an implicit vote of confidence in that person's expertise. If we view the graph of proxy votes as a graph where directed edges represent votes of confidence, then centrality is the natural choice to choose the experts in the graph. However, centrality measures do not require that nodes only "proxy" to one other node --- having this as a requirement in proxy voting limits the information we can obtain from voters, as it forces the graph to be unnecessarily sparse. One potential way to get around this problem is through the use of \textit{confidence networks}, where voters are allowed to list not just one but multiple other voters in which they feel confident. In this case, centrality measures would be used, not as a way to deal with the unfortunate case of cycles, but rather as way to calculate the relative expertise of voters in a system. There are many different ways this could be used --- for instance, votes could be weighted by the calculated expertise of the voters who cast them.
+
+\subsubsection{Behavioral Model of Voting}
+
+What factors lead people to proxy? Quantify various aspects such as confidence, trust, bias, and knowledge and generate functions that say to whom each voter should proxy.
 
 \subsection{Impact}
 In this paper, we explained the motivation behind proxy voting and explored the aspect of cycles --- why they form and how to break them. Ultimately, in order to implement a proxy voting system, we need a way to handle cycles. Until now, the only method proposed to deal with cycles involved granting them zero voting-power. By proposing a cycle-breaking method that does not disenfranchise voters in a cycle, we provide allow for the use of proxy voting in situations where voters would be upset if their votes were discarded, such as modern political elections.
@@ -216,6 +224,24 @@ Paolo Boldi and Corrado Monti
 \textit{Cleansing Wikipedia Categories using Centrality}
 IW3C2, Montreal, Quebec, Canada, April 15, 2016
 \\\texttt{http://snap.stanford.edu/wikiworkshop2016/papers/}
+
+\bibitem{ben1}
+Yefim I. Leifman
+\textit{Secret and Verifiable Delegated Voting for Wide
+Representation}
+\\\texttt{http://eprint.iacr.org/2014/351.pdf}
+
+\bibitem{ben2}
+James Green-Armytage
+\textit{Direct Voting and Proxy Voting}
+Department of Economics, Bard College, Annandale-on-Hudson, NY, 2014l
+\\\texttt{http://inside.bard.edu/~armytage/proxy.pdf}
+
+\bibitem{ben3}
+Paolo Boldi and Francesco Bonchi and Carlos Castillo and Sebastiano Vigna
+\textit{Voting in Social Networks}
+CIKM, Hong Kong, China, 2009
+\\\texttt{http://www-kdd.isti.cnr.it/~bonchi/votingSN.pdf}
 
 \end{thebibliography}
 
