@@ -56,7 +56,7 @@ Though proxy voting is a relatively new notion, inspired by the advancement of s
 We start with some notation. Let $a \rightarrow b$ denote that voter $a$ proxies to voter $b$.  Let $G = (V,E)$ denote the graph of proxy votes, where $V$ is the set of all voters, and $E$ is the set of all edges.
 
 \subsection{Formalization as Graph Theory}
-To visualize and analyze a proxy voting system, we can represent the system as a graph, where each voter is a node having weight 1 and each proxy vote is a directed edge pointing from the proxying voter to the voter who is being proxied to. As such, voting power flows between nodes along edge paths; each voter has voting power equal to its own weight of 1, plus the sum of the voting power of the nodes pointing to it. We can formally define the voting power $p(v)$ of voter $v$ recursively:
+To visualize and analyze a proxy voting system, we can represent the system as a graph, where each voter is a node having weight 1 and each proxy vote is a directed edge pointing from the proxying voter to the recipient of the proxy. As such, each node is a \textbf{source} of voting power, and voting power flows between nodes along edge paths, accumulating at nodes with no outgoing edge, or \textbf{sinks}, which represent voters who cast a vote instead of proxy. Each voter has voting power equal to its own weight of 1, plus the sum of the voting power of the nodes pointing to it. We can formally define the voting power $p(v)$ of voter $v$ recursively:
 
 \theoremstyle{definition}
 \begin{definition}{Voting Power of a voter:}
