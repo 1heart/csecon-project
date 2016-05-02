@@ -160,7 +160,7 @@ A centrality measure intuitively captures the idea of the most important vertex 
 
 Now, we can describe a simple cycle breaking algorithm: After all votes are cast, compute the centrality of every node in a cycle. For every pseudotree, query the node in the pseudo tree who the centrality measure ranks the highest. Use the vote of this queried node to represent the vote of every other node in the pseudotree.
 
-Although any centrality measure could be used to rank nodes in a pseudotree, here we propose the use of Katz Centrality as we feel it is best suited to the nature of proxy voting. Katz Centrality ranks nodes proportional to the number of nodes in their subtree, while penalizing the contribution of distant nodes.
+Although any centrality measure could be used to rank nodes in a pseudotree, here we propose the use of Katz Centrality as we feel it is best suited to the nature of proxy voting. Katz Centrality ranks nodes proportional to the number of nodes in their subtree, while penalizing the contribution of distant nodes. Another way of thinking of the Katz Centrality of a node $i$ is that it counts the number of walks of size $k$ through $G$ that end at $i$, penalizing each step by a factor of $\alpha$, and then summing over all $k$.
 
 Let $A$ be the adjacency matrix of $G$, and let $\alpha \in (0,1)$ be some discounting factor. If $C_{Katz}(i)$ denotes the Katz Centrality of a node $i$, then $C_{Katz}(i)$ is defined as follows:
 \theoremstyle{definition}
@@ -186,11 +186,23 @@ The fastest known algorithm for matrix inverse runs in time $O(n^{2.373})$. Matr
 We can, however, exploit the structure of our graph to greatly improve this runtime bound:
 
 \begin{theorem}
-For nodes in a pseudoforest, $\overrightarrow{C_{Katz}}$ can be computed in linear time.
+For nodes in a pseudoforest, $\overrightarrow{C_{Katz}}$ can be computed in \\
+$O(n \log n \log \log n \log \log \log n)$ time.
 \end{theorem}
 
 \begin{proof}
-Let $T$ be a pseudotree in $G$ with a cycle $C$ of length $k$ inside $T$. Let $c_i$ be a node in $C$, and let $t_i$ be the tree rooted at  $c_i$ that has no nodes in $C$ other than $c_i$. Clearly we can calculate the centrality of this tree in linear time by simply traversing the tree --- thus, we can compress the tree into a single node connected to $c_i$ that stores the centrality of the entire tree. We can call this node $d_i$. Since we will eventually calculate the centrality of $c_i$ by multiplying $d_i$ by $\alpha$ and adding it to $c_i$, we can go ahead and store the value of $d_i$ in $c_i$. Thus, we can transform $T$ into an equivalent cycle $C'$, where $c_i'$ represents a node in $C'$, as follows: $\forall c_i \in C, c_i' = 1 + \alpha C_{Katz}d_i$.  We have now reduced our problem to that of calculating the centrality of a cycle, which can be done as follows. Let $C$ be the following cycle: $c_0 \rightarrow c_1 \rightarrow c_2 \rightarrow c_3 \rightarrow ... \rightarrow c_{k-1} \rightarrow c_k \rightarrow c_1$.  Normally, when calculating centrality, each node implicitly stores a 1. Now each node in the cycle stores the value $c_i'$. From here, we can exploit the cycle, reducing the infinite sum to a convergent geometric series as follows:
+Let $T$ be a pseudotree in $G$ with a cycle $C$ of length $k$ inside $T$. Let $c_i$ be a node in $C$, and let $t_i$ be the tree rooted at  $c_i$ that has no nodes in $C$ other than $c_i$. Clearly we can calculate the centrality of this tree in linear time by simply traversing the tree --- thus, we can compress the tree into a single node connected to $c_i$ that stores the centrality of the entire tree. We can call this node $d_i$. Since we will eventually calculate the centrality of $c_i$ by multiplying $d_i$ by $\alpha$ and adding it to $c_i$, we can go ahead and store the value of $d_i$ in $c_i$. Thus, we can transform $T$ into an equivalent cycle $C'$, where $c_i'$ represents a node in $C'$, as follows: $\forall c_i \in C, c_i' = 1 + \alpha C_{Katz}d_i$.  We have now reduced our problem to that of calculating the centrality of a cycle, which can be done as follows. Let $C$ be the following cycle: $c_0 \rightarrow c_1 \rightarrow c_2 \rightarrow c_3 \rightarrow ... \rightarrow c_{k-1} \rightarrow c_k \rightarrow c_0$.  Normally, when calculating centrality, each node implicitly stores a 1. Now each node in the cycle stores the value $c_i'$. From here, we can exploit the cycle, reducing the infinite sum to a convergent geometric series as follows: 
+\begin{align*}
+C_{Katz}(c_0) &= \sum_{k-1}^\infty \alpha^k(A^k)_{ji}\\
+&= \sum_{j=0}^{\infty}(\alpha^k)^j\sum_{j=0}^{k-1}\alpha^i c'_{(k-1) \mod k}\\
+&= \frac{\sqrt{\sum\limits_{j=0}^{k-1}\alpha^i c'_{(k-1) \mod k}}}{1-\alpha^k}\\
+\end{align*}
+Using this, we can directly compute the centrality of $c_0$. Then, we can relate the centrality of $c_i$ to $c_{i-1}$ as follows:
+\begin{align*}
+\forall 1 < i \leq k, \quad C_{Katz}(c_i) = c'_{i} + \alpha C_{Katz}(C_{i-1})\\
+\end{align*}
+Thus, using this equation, we can traverse the cycle and compute all the centralities. Multiplication can be done in $O(N\log N \log \log N)$\cite{german}, where $N$ is the number of bits of the number being multiplied. In our case, the numbers being multiplied are the centralities of the trees feeding into the cycle -- clearly, these numbers are upper bounded by $n$. Therefore, we have that $N = \log n$. Since we have to do a linear number of multiplications, we have that the entire algorithm runs in time $O(n\log n \log \log n \log \log \log n)$.
+
 \end{proof}
 
 
@@ -258,6 +270,11 @@ Paolo Boldi and Francesco Bonchi and Carlos Castillo and Sebastiano Vigna
 \textit{Voting in Social Networks}
 CIKM, Hong Kong, China, 2009
 \\\texttt{http://www-kdd.isti.cnr.it/~bonchi/votingSN.pdf}
+
+\bibitem{german}
+A. Schönhage and V. Strassen
+\textit{Schnelle Multiplikation großer Zahlen}
+Computing 7, 281-292, 1971
 
 \end{thebibliography}
 
