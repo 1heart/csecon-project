@@ -90,12 +90,12 @@ $S$ exhibits Choice of Role if all voters in $S$ can choose whether they vote or
 
 \theoremstyle{definition}
 \begin{definition}{Enfranchisement:}
-Let $Q$ be a connected component in $V$. $S$ exhibits Enfranchisement if $\forall a \in Q, P(Q) > P(Q\setminus\{a\})$. That is, including $a$ should only increase the voting power of a component.
+Let $Q$ be a connected component in $V$. $S$ exhibits Enfranchisement if $\forall a \in Q, P(Q) > P(Q\setminus\{a\})$. That is, including $a$ should only increase the voting power of a component. In particular, $P(Q) > 0$.
 \end{definition}
 
 \theoremstyle{definition}
 \begin{definition}{Representation:}
-For a voter $v$, if $v$ voted, let $A_v$ denote the set of candidates for which $v$ voted ($A_v = \emptyset$ if $v$ did not vote). If $v$ did not vote, let $H_v$ denote the set of candidates for which $v$ would vote if $v$ were to vote ($H_v = \emptyset$ if $v$ did vote.)  Let $C(Q)$ denote the candidate voted for from the component $Q$ by the voting rule in $S$. $S$ exhibits Representation if $C(Q) \in \smashoperator{\bigcup\limits_{v \in Q}}A_v\cup H_v$.
+For a voter $v$, if $v$ voted, let $A_v$ denote the set of candidates for which $v$ voted ($A_v = \emptyset$ if $v$ did not vote). If $v$ did not vote, let $H_v$ denote the set of candidates for which $v$ would vote if $v$ were to vote ($H_v = \emptyset$ if $v$ did vote). Let $C(Q)$ denote the candidate voted for from the component $Q$ by the voting rule in $S$. $S$ exhibits Representation if $C(Q) \in \smashoperator{\bigcup\limits_{v \in Q}}A_v\cup H_v$. That is, the candidate voted for with a component's voting power should be a candidate that one of them would have actually voted for if they were to have voted.
 \end{definition}
 
 
@@ -127,9 +127,9 @@ Suppose there exists $C_i$ for $i \in \{1, 2, ..., n\}$ for which nodes $i$ form
 \subsection{Impossibility Result}
 We claim that for a constituency without perfect information about each others' competence, there is no voting mechanism $S$ for which the aforementioned properties all hold. We begin with the following lemma:
 
-\begin{lemma}[Cycles Form]
-\label{cyclesform}
-If no voter votes, then there must exist some cycle.
+\begin{lemma}
+\label
+If all voters proxy, then there must exist some cycle.
 \end{lemma}
 \begin{proof}
 We prove by contradiction:
@@ -137,14 +137,14 @@ Suppose that $G$ does not contain a cycle. Then $G$ must consist only of trees, 
 \end{proof}
 
 \begin{theorem} 
-\label{CFLIT}
+\label
 There exists no system $S$ for which the properties Choice of Role, Enfranchisement, and Representation simultaneously hold.
 \end{theorem}
 \begin{proof} We prove by counterexample:
 
-Let us assume that all voters proxy, which is allowed under Choice of Role. We have from Lemma \ref{cyclesform} that $G$ must contain at least one cycle and no voters. By enfranchisement, this cycle must have some voting power, and by determinism and representativeness, this voting power may not go to an arbitrary candidate. 
+Let us assume that all voters proxy, which is allowed under Choice of Role. We have from the above Lemma that $G$ must contain at least one cycle. By Enfranchisement, this cycle must have some voting power.
 
-However, let $A = \smashoperator{\bigcup\limits_{v \in V}}A_v$ as defined in Representativeness. S must select a candidate in $A$, but by determinism and representativeness, it cannot pick one arbitrarily and there is no information to pick a candidate without forcing a voter to vote instead of proxy. Therefore, these properties are incompatible even with arbitrary $S$.
+Let $A(Q) = \smashoperator{\bigcup\limits_{v \in Q}}A_v$ for each connected component $Q$, as defined in Representation. $S$ must select a candidate in $A(Q)$ for each $Q$, but by Representation, there is no information about voter preferences unless a voter is forced to vote instead of proxy. However, this violates Choice of Role. Thus, these properties are incompatible for any $S$.
 
 \end{proof}
 
