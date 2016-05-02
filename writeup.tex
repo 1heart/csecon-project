@@ -32,7 +32,7 @@ Vince Conitzer, Department of Computer Science, Duke University, Durham, NC
 
 \begin{abstract}
 
-Classical voting schemes are an important part of our society but are fraught with problems, including problematic voter turnout, ill-informed voters, and illiquid representation. Proxy voting is a voting scheme that aims to alleviate such problems by providing a way for voters to delegate their vote to another voter. However, proxy voting comes with its own set of problems, especially when cycles are formed in voting delegation. We formalize proxy voting using graph theory and explore the issues of cycle-breaking, deriving an impossibility result and an approach to cycle-breaking using concepts social network theory.
+Classical voting schemes are an important part of our society but are fraught with problems, including problematic voter turnout, ill-informed voters, and illiquid representation. Proxy voting is a voting scheme that aims to alleviate such problems by providing a way for voters to delegate their votes to other voters. However, proxy voting comes with its own set of problems, especially when cycles are formed in voting delegation. We formalize proxy voting using graph theory and explore the issues of cycle-breaking, deriving an impossibility result and an approach to cycle-breaking using concepts in social network theory.
 
 \end{abstract}
 
@@ -40,17 +40,17 @@ Classical voting schemes are an important part of our society but are fraught wi
 
 \subsubsection{Problems with current voting schemes}
 
-Current voting schemes underly the foundations of government and society, but often come with systemic issues. 
+Current voting schemes underlie the foundations of government and society, but often come with systemic issues. 
 
 For example, voter turnout may be problematic due to a variety of issues. This is empirically true in the US voting system\cite{turnout}, which has lower voter turnout than most established democracies. 
 
 Rational ignorance\cite{rationalIgnorance}, or the concept that it may be rational to forgo acquiring information depending on the costs incurred during acquisition, may be a factor. Regardless of the rationality behind it, ill-informed voting is a possibility difficult to avoid without raising the specter of literacy tests and their associated history.
 
-Finally, the current voting scheme is has illiquid representation. There is arbitrary pooling and condensing of voting from systems like the US electoral college and easily-gerrymandered district boundaries, where external factors magnify and dilute the voting power of certain constituents over others.
+Finally, the current voting scheme has illiquid representation. There is arbitrary pooling and condensing of voting from systems like the US electoral college and easily-gerrymandered district boundaries, where external factors magnify and dilute the voting power of certain constituents over others.
 
 \subsubsection{Introduction to Proxy Voting}
 
-Proxy voting is the voting scheme that one voter can delegate their voting power to another. This simple idea allows the sidestepping of many of the previous issues. The main reason is that it lowers the barrier to becoming a responsible voter drastically; to become a fully informed active voter is much harder than delegating to simply someone who is more informed. This recursive process has the natural tendency to shift voting power to more informed voters. In this sense, it is an extension of the idea of a republic with elected representatives, as opposed to a direct democracy.
+Proxy voting is the voting scheme in which one voter can delegate their voting power to another. This simple idea allows the diminishing of many of the previous issues. The main reason is that it lowers the barrier to becoming a responsible voter drastically; to become a fully informed active voter is much harder than simply delegating to someone who is more informed. This recursive process aims to shift voting power to more informed voters, while not disenfranchising ill-informed voters. In this sense, it is an extension of the idea of a republic with elected representatives, as opposed to a direct democracy.
 
 \section{Previous Work}
 
@@ -80,7 +80,7 @@ Proxy voting graphs also have a few special properties. Particularly, each node 
 
 
 \subsection{Desirable Properties}
-As in traditional voting mechanism design, proxy voting mechanisms should ideally satisfy a set of desired properties. Though there are many that one might propose, for the purposes of this paper we focus on four:
+As in traditional voting mechanism design, proxy voting mechanisms should ideally satisfy a set of desired properties. Though there are many that one might propose, for the purposes of this paper we focus on three:
 
 
 \theoremstyle{definition}
@@ -128,7 +128,6 @@ Suppose there exists $C_i$ for $i \in \{1, 2, ..., n\}$ for which nodes $i$ form
 We claim that for a constituency without perfect information about each others' competence, there is no voting mechanism $S$ for which the aforementioned properties all hold. We begin with the following lemma:
 
 \begin{lemma}
-\label
 If all voters proxy, then there must exist some cycle.
 \end{lemma}
 \begin{proof}
@@ -137,7 +136,6 @@ Suppose that $G$ does not contain a cycle. Then $G$ must consist only of trees, 
 \end{proof}
 
 \begin{theorem} 
-\label
 There exists no system $S$ for which the properties Choice of Role, Enfranchisement, and Representation simultaneously hold.
 \end{theorem}
 \begin{proof} We prove by counterexample:
@@ -187,15 +185,15 @@ $O(n \log n \log \log n \log \log \log n)$ time.
 \end{theorem}
 
 \begin{proof}
-Let $T$ be a pseudotree in $G$ with a cycle $C$ of length $k$ inside $T$. Let $c_i$ be a node in $C$, and let $t_i$ be the tree rooted at  $c_i$ that has no nodes in $C$ other than $c_i$. Clearly we can calculate the centrality of this tree in linear time by simply traversing the tree --- thus, we can compress the tree into a single node connected to $c_i$ that stores the centrality of the entire tree. We can call this node $d_i$. Since we will eventually calculate the centrality of $c_i$ by multiplying $d_i$ by $\alpha$ and adding it to $c_i$, we can go ahead and store the value of $d_i$ in $c_i$. Thus, we can transform $T$ into an equivalent cycle $C'$, where $c_i'$ represents a node in $C'$, as follows: $\forall c_i \in C, c_i' = 1 + \alpha C_{Katz}d_i$.  We have now reduced our problem to that of calculating the centrality of a cycle, which can be done as follows. Let $C$ be the following cycle: $c_0 \rightarrow c_1 \rightarrow c_2 \rightarrow c_3 \rightarrow ... \rightarrow c_{k-1} \rightarrow c_k \rightarrow c_0$.  Normally, when calculating centrality, each node implicitly stores a 1. Now each node in the cycle stores the value $c_i'$. From here, we can exploit the cycle, reducing the infinite sum to a convergent geometric series as follows: 
+Let $T$ be a pseudotree in $G$ with a cycle $C$ of length $k$ inside $T$. Let $c_i$ be a node in $C$, and let $t_i$ be the tree rooted at  $c_i$ that has no nodes in $C$ other than $c_i$. Clearly we can calculate the centrality of this tree in linear time by simply traversing the tree --- thus, we can compress the tree into a single node connected to $c_i$ that stores the centrality of the entire tree. We can call this node $d_i$. Since we will eventually calculate the centrality of $c_i$ by multiplying $d_i$ by $\alpha$ and adding it to $c_i$, we can go ahead and store the value of $d_i$ in $c_i$. Thus, we can transform $T$ into an equivalent cycle $C'$, where $c_i'$ represents a node in $C'$, as follows: $\forall c_i \in C, c_i' = 1 + \alpha * C_{Katz}(d_i)$.  We have now reduced our problem to that of calculating the centrality of a cycle, which can be done as follows. Let $C$ be the following cycle: $c_0 \rightarrow c_1 \rightarrow c_2 \rightarrow c_3 \rightarrow ... \rightarrow c_{k-1}  \rightarrow c_0$.  Normally, when calculating centrality, each node implicitly stores a 1. Now each node in the cycle stores the value $c_i'$. From here, we can exploit the cycle, reducing the infinite sum to a convergent geometric series as follows: 
 \begin{align*}
-C_{Katz}(c_0) &= \sum_{k-1}^\infty \alpha^k(A^k)_{ji}\\
-&= \sum_{j=0}^{\infty}(\alpha^k)^j\sum_{j=0}^{k-1}\alpha^i c'_{(k-1) \mod k}\\
-&= \frac{\sqrt{\sum\limits_{j=0}^{k-1}\alpha^i c'_{(k-1) \mod k}}}{1-\alpha^k}\\
+C_{Katz}(c_0) &= \sum_{k=1}^\infty \alpha^k(A^k)_{ji}\\
+&= \sum_{j=0}^{\infty}(\alpha^k)^j\sum_{i=0}^{k-1}\alpha^i c'_{(k-1) \mod k}\\
+&= \frac{\sum\limits_{i=1}^{k-1}\alpha^i c'_{(k-1) \mod k}}{1-\alpha^k}\\
 \end{align*}
 Using this, we can directly compute the centrality of $c_0$. Then, we can relate the centrality of $c_i$ to $c_{i-1}$ as follows:
 \begin{align*}
-\forall 1 < i \leq k, \quad C_{Katz}(c_i) = c'_{i} + \alpha C_{Katz}(C_{i-1})\\
+\forall 1 < i \leq k, \quad C_{Katz}(c_i) =\alpha( c'_{i} +  C_{Katz}(C_{i-1}))\\
 \end{align*}
 Thus, using this equation, we can traverse the cycle and compute all the centralities. Multiplication can be done in $O(N\log N \log \log N)$\cite{german}, where $N$ is the number of bits of the number being multiplied. In our case, the numbers being multiplied are the centralities of the trees feeding into the cycle -- clearly, these numbers are upper bounded by $n$. Therefore, we have that $N = \log n$. Since we have to do a linear number of multiplications, we have that the entire algorithm runs in time $O(n\log n \log \log n \log \log \log n)$.
 
