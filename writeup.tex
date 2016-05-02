@@ -11,6 +11,8 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 
+\newcommand{\Mod}[1]{\ \text{mod}\ #1}
+
 \newcommand{\bb}[1]{\mathbb{#1}}
 
   \begin{document}
@@ -28,7 +30,11 @@ Vince Conitzer, Department of Computer Science, Duke University, Durham, NC
 
 \section{Introduction}
 
+\begin{abstract}
+
 Classical voting schemes are an important part of our society but are fraught with problems, including problematic voter turnout, ill-informed voters, and illiquid representation. Proxy voting is a voting scheme that aims to alleviate such problems by providing a way for voters to delegate their vote to another voter. However, proxy voting comes with its own set of problems, especially when cycles are formed in voting delegation. We formalize proxy voting using graph theory and explore the issues of cycle-breaking, deriving an impossibility result and an approach to cycle-breaking using concepts social network theory.
+
+\end{abstract}
 
 \subsection{Motivation}
 
@@ -122,7 +128,7 @@ $S$ exhibits determinism if repeated application of S results in the same candid
 
 \theoremstyle{definition}
 \begin{definition}{Representativeness:}
-For a voter $v$ in any weakly connected component, if $v$ voted, let $A_v$ denote the set of candidates for which $v$ voted. If $v$ did not vote, let $A_v$ denote the set of candidates for which $v$ would vote if $v$ were to vote. Let $c$ denote the candidate chosen by the voting rule in $S$. $S$ exhibits Representativeness if $c \in \smashoperator{\bigcup\limits_{v \in V}}A_v$ 
+For a voter $v$, if $v$ voted, let $A_v$ denote the set of candidates for which $v$ voted ($A_v = \emptyset$ if $v$ did not vote). If $v$ did not vote, let $H_v$ denote the set of candidates for which $v$ would vote if $v$ were to vote ($H_v = \emptyset$ if $v$ did vote.  Let $c$ denote the candidate chosen by the voting rule in $S$. $S$ exhibits Representativeness if $c \in \smashoperator{\bigcup\limits_{v \in V}}A_v\cup H_v$ 
 \end{definition}
 
 \begin{lemma}[Cycles Form]
@@ -173,17 +179,18 @@ $\overrightarrow{C_{Katz}}  = ((I - \alpha A^T)^{-1}-I)\vec{I}$
 $\overrightarrow{C_{Katz}}$ can be computed directly in time $O(n^{2.373})$
 \end{theorem}
 \begin{proof}
-The fastest known algorithm for matrix inverse runs in time $O(n^2.373)$. Matrix addition can be done in linear time -- thus, the inverse takes the longest of all operations in this equation, so the runtime is equal to that of the matrix inverse.
+The fastest known algorithm for matrix inverse runs in time $O(n^{2.373})$. Matrix addition can be done in linear time -- thus, the inverse takes the longest of all operations in this equation, so the runtime is equal to that of the matrix inverse.
 \end{proof}
 
+%We believe it is possible to exploit the pseudoforest structure of the graph to bring this computation down to $O(n^2)$ --- however, we did not have time to pursue this line of thought in this project.
 We can, however, exploit the structure of our graph to greatly improve this runtime bound:
 
 \begin{theorem}
-For a pseudoforest nodes in cycles in a pseudoforest, $\overrightarrow{C_{Katz}}$ can be computed in linear time.
+For nodes in a pseudoforest, $\overrightarrow{C_{Katz}}$ can be computed in linear time.
 \end{theorem}
 
 \begin{proof}
-Let $T$ be a pseudotree in $G$ with a cycle $C$ of length $k$ inside $T$. Let $c_i$ be a node in $C$, and let $t_i$ be the tree rooted at  $c_i$ that has no nodes in $C$ other than $c_i$. Clearly we can calculate the centrality of this tree in linear time --- thus, we can compress the tree into a single node connected to $c_i$ that stores the centrality of the entire tree. We can call this node $d_i$. Since we will eventually calculate the centrality of $c_i$ by multiplying $d_i$ by $\alpha$ and adding it to $c_i$, we can go ahead and store the value of $d_i$ in $c_i$. Thus, we can transform $T$ into an equivalent cycle $C'$, where $c_i'$ represents a node in $C'$, as follows: $\forall c_i \in C, c_i' = 1 + \alpha d_i$.  We have now reduced our problem to that of calculating the centrality of a cycle, which can be done as follows. Let $C$ be the following cycle: $c_1 \rightarrow c_2 \rightarrow c_3 \rightarrow ... \rightarrow c_{k-1} \rightarrow c_k \rightarrow c_1$.  We calculate 
+Let $T$ be a pseudotree in $G$ with a cycle $C$ of length $k$ inside $T$. Let $c_i$ be a node in $C$, and let $t_i$ be the tree rooted at  $c_i$ that has no nodes in $C$ other than $c_i$. Clearly we can calculate the centrality of this tree in linear time by simply traversing the tree --- thus, we can compress the tree into a single node connected to $c_i$ that stores the centrality of the entire tree. We can call this node $d_i$. Since we will eventually calculate the centrality of $c_i$ by multiplying $d_i$ by $\alpha$ and adding it to $c_i$, we can go ahead and store the value of $d_i$ in $c_i$. Thus, we can transform $T$ into an equivalent cycle $C'$, where $c_i'$ represents a node in $C'$, as follows: $\forall c_i \in C, c_i' = 1 + \alpha C_{Katz}d_i$.  We have now reduced our problem to that of calculating the centrality of a cycle, which can be done as follows. Let $C$ be the following cycle: $c_0 \rightarrow c_1 \rightarrow c_2 \rightarrow c_3 \rightarrow ... \rightarrow c_{k-1} \rightarrow c_k \rightarrow c_1$.  Normally, when calculating centrality, each node implicitly stores a 1. Now each node in the cycle stores the value $c_i'$. From here, we can exploit the cycle, reducing the infinite sum to a convergent geometric series as follows:
 \end{proof}
 
 
