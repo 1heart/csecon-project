@@ -59,10 +59,8 @@ Though proxy voting is a relatively new notion, inspired by the advancement of s
 
 \section{Our Work}
 
-We start with some notation. Let $a \rightarrow b$ denote that voter $a$ proxies to voter $b$.  Let $G = (V,E)$ denote the graph of proxy votes, where $V$ is the set of all voters, and $E$ is the set of all edges.
-
 \subsection{Formalization as Graph Theory}
-To visualize and analyze a proxy voting system, we can represent the system as a graph, where each voter is a node having weight 1 and each proxy vote is a directed edge pointing from the proxying voter to the recipient of the proxy. As such, each node is a \textbf{source} of voting power, and voting power flows between nodes along edge paths, accumulating at nodes with no outgoing edge, or \textbf{sinks}, which represent voters who cast a vote instead of proxy. Each voter has voting power equal to its own weight of 1, plus the sum of the voting power of the nodes pointing to it. We can formally define the voting power $p(v)$ of voter $v$ recursively:
+To visualize and analyze a proxy voting system, we can represent the system as a graph, where each voter is a node having weight 1 and each proxy vote is a directed edge pointing from the proxying voter to the recipient of the proxy. We start with some notation. Let $a \rightarrow b$ denote that voter $a$ proxies to voter $b$. Let $G = (V,E)$ denote the graph of proxy votes, where $V$ is the set of all voters, and $E$ is the set of all edges with $(a,b) \in E$ if and only if $a \rightarrow b$. As such, each node is a \textbf{source} of voting power, and voting power flows between nodes along edge paths, accumulating at nodes with no outgoing edge, or \textbf{sinks}, which represent voters who cast a vote instead of proxy. Each voter has voting power equal to its own weight of 1, plus the sum of the voting power of the nodes pointing to it. We can formally define the voting power $p(v)$ of voter $v$ recursively:
 
 \theoremstyle{definition}
 \begin{definition}{Voting Power of a voter:}
@@ -73,7 +71,7 @@ Furthermore, we can define the voting power $P(Q)$ of a set $Q$ as follows:
 
 \theoremstyle{definition}
 \begin{definition}{Voting Power of a set:}
-For $Q \subseteq V, P(Q)$ is the sum of the voting power of the sinks in $Q$.
+For $Q \subseteq V, P(Q)$ is the sum of the voting power $p(s)$ of the sinks $s$ in $Q$.
 \end{definition}
 
 
@@ -81,18 +79,36 @@ For $Q \subseteq V, P(Q)$ is the sum of the voting power of the sinks in $Q$.
 Proxy voting graphs also have a few special properties. Particularly, each node in the graph can have at most one outgoing edge, or outdegree at most one. Graphs with this property are called \textbf{directed pseudoforests}. As a consequence, we know that proxy voting graphs are made up of connected components each of which have at most one cycle.
 
 
+\subsection{Desirable Properties}
+As in traditional voting mechanism design, proxy voting mechanisms should ideally satisfy a set of desired properties. Though there are many that one might propose, for the purposes of this paper we focus on four:
+
+
+\theoremstyle{definition}
+\begin{definition}{Choice of Role:}
+$S$ exhibits Choice of Role if all voters in $S$ can choose whether they vote or proxy.
+\end{definition}
+
+\theoremstyle{definition}
+\begin{definition}{Enfranchisement:}
+Let $Q$ be a connected component in $V$. $S$ exhibits Enfranchisement if $\forall a \in Q, P(Q) > P(Q\setminus\{a\})$. That is, including $a$ should only increase the voting power of a component.
+\end{definition}
+
+\theoremstyle{definition}
+\begin{definition}{Representation:}
+For a voter $v$, if $v$ voted, let $A_v$ denote the set of candidates for which $v$ voted ($A_v = \emptyset$ if $v$ did not vote). If $v$ did not vote, let $H_v$ denote the set of candidates for which $v$ would vote if $v$ were to vote ($H_v = \emptyset$ if $v$ did vote.)  Let $C(Q)$ denote the candidate voted for from the component $Q$ by the voting rule in $S$. $S$ exhibits Representation if $C(Q) \in \smashoperator{\bigcup\limits_{v \in Q}}A_v\cup H_v$.
+\end{definition}
 
 
 \subsection{Existence of cycles}
 
-There are cases where we can guarantee no cycles, even reasonably common cases.
+Though pseudoforests can in general contain cycles, there are cases where we can guarantee no cycles.
 
 Let us define a competence measure $C_i \in \mathbb{R}$ for $ i \in V$, which is the objective measure of voter $i$'s competence in voting. Let the perceived competence measure of voter $j$ perceived by voter $i$ be $c_{ij}$ for $i, j \in V$ . 
 
 We assume throughout this paper that $i \rightarrow j \implies c_{ii} < c_{ij}$, i.e., voter $i$ proxies to voter $j$ only if $i$ perceives $j$ to have greater competence than itself.
 
 
-At the ideal limit where actual competence equals perceived competence, we have the following monotonicity theorem:
+At the ideal limit where everyone has perfect information about others' level of competence, i.e. perceived competence equals actual competence, we have the following monotonicity theorem:
 
 \begin{theorem}
 
@@ -107,29 +123,9 @@ We prove by contradiction
 Suppose there exists $C_i$ for $i \in \{1, 2, ..., n\}$ for which nodes $i$ form a cycle $1 \rightarrow 2 \rightarrow ... n \rightarrow 1$. Then $c_{12} < c_{23 }< ... < c_{(n-1)n} < c_{n1} \implies C_1 < C_2 < ... < C_n < C_1 \implies C_1 < C_1. \Rightarrow\Leftarrow$
 \end{proof}
 
-\subsection{Cycle Formation}
-Let $\bb{S}$ denote the set of all possible proxy voting systems. Let $S \in \bb{S}$ denote an arbitrary proxy voting system.
 
-
-\theoremstyle{definition}
-\begin{definition}{Choice of Role:}
-$S$ exhibits Choice of Role if all voters in $S$ can choose whether they vote or proxy.
-\end{definition}
-
-\theoremstyle{definition}
-\begin{definition}{Enfranchisement:}
-$S$ exhibits Enfranchisement if $\forall a \in V, P(V) > P(V\setminus\{a\})$
-\end{definition}
-
-\theoremstyle{definition}
-\begin{definition}{Determinism:}
-$S$ exhibits determinism if repeated application of S results in the same candidate being chosen each time.
-\end{definition}
-
-\theoremstyle{definition}
-\begin{definition}{Representativeness:}
-For a voter $v$, if $v$ voted, let $A_v$ denote the set of candidates for which $v$ voted ($A_v = \emptyset$ if $v$ did not vote). If $v$ did not vote, let $H_v$ denote the set of candidates for which $v$ would vote if $v$ were to vote ($H_v = \emptyset$ if $v$ did vote.  Let $c$ denote the candidate chosen by the voting rule in $S$. $S$ exhibits Representativeness if $c \in \smashoperator{\bigcup\limits_{v \in V}}A_v\cup H_v$ 
-\end{definition}
+\subsection{Impossibility Result}
+We claim that for a constituency without perfect information about each others' competence, there is no voting mechanism $S$ for which the aforementioned properties all hold. We begin with the following lemma:
 
 \begin{lemma}[Cycles Form]
 \label{cyclesform}
@@ -142,7 +138,7 @@ Suppose that $G$ does not contain a cycle. Then $G$ must consist only of trees, 
 
 \begin{theorem} 
 \label{CFLIT}
-There exists no system $S$ for which the properties Choice of Role, Enfranchisement, and Determinism, and Representativeness simultaneously hold.
+There exists no system $S$ for which the properties Choice of Role, Enfranchisement, and Representation simultaneously hold.
 \end{theorem}
 \begin{proof} We prove by counterexample:
 
@@ -279,3 +275,4 @@ Computing 7, 281-292, 1971
 \end{thebibliography}
 
 \end{document}
+  
