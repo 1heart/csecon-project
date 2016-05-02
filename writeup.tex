@@ -95,7 +95,7 @@ Let $Q$ be a connected component in $V$. $S$ exhibits Enfranchisement if $\foral
 
 \theoremstyle{definition}
 \begin{definition}{Representation:}
-For a voter $v$, if $v$ voted, let $A_v$ denote the set of candidates for which $v$ voted ($A_v = \emptyset$ if $v$ did not vote). If $v$ did not vote, let $H_v$ denote the set of candidates for which $v$ would vote if $v$ were to vote ($H_v = \emptyset$ if $v$ did vote.)  Let $C(Q)$ denote the candidate voted for from the component $Q$ by the voting rule in $S$. $S$ exhibits Representation if $C(Q) \in \smashoperator{\bigcup\limits_{v \in Q}}A_v\cup H_v$.
+For a voter $v$, if $v$ voted, let $A_v$ denote the set of candidates for which $v$ voted ($A_v = \emptyset$ if $v$ did not vote). If $v$ did not vote, let $H_v$ denote the set of candidates for which $v$ would vote if $v$ were to vote ($H_v = \emptyset$ if $v$ did vote). Let $C(Q)$ denote the candidate voted for from the component $Q$ by the voting rule in $S$. $S$ exhibits Representation if $C(Q) \in \smashoperator{\bigcup\limits_{v \in Q}}A_v\cup H_v$.
 \end{definition}
 
 
@@ -129,7 +129,7 @@ We claim that for a constituency without perfect information about each others' 
 
 \begin{lemma}[Cycles Form]
 \label{cyclesform}
-If no voter votes, then there must exist some cycle.
+If all voters proxy, then there must exist some cycle.
 \end{lemma}
 \begin{proof}
 We prove by contradiction:
