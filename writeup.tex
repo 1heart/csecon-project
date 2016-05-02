@@ -116,8 +116,13 @@ $S$ exhibits Enfranchisement if $\forall a \in V, P(V) > P(V\setminus\{a\})$
 \end{definition}
 
 \theoremstyle{definition}
-\begin{definition}{Reasonable Candidate:}
-For a voter $v$, if $v$ voted, let $A_v$ denote the set of candidates for which $v$ voted. If $v$ did not vote, let $A_v$ denote the set of candidates for which $v$ would vote if $v$ were to vote. Let $c$ denote the candidate chosen by the voting rule in $S$. $S$ exhibits Voters Choose if $c \in \smashoperator{\bigcup\limits_{v \in V}}A_v$ 
+\begin{definition}{Determinism:}
+$S$ exhibits determinism if repeated application of S results in the same candidate being chosen each time.
+\end{definition}
+
+\theoremstyle{definition}
+\begin{definition}{Representativeness:}
+For a voter $v$ in any weakly connected component, if $v$ voted, let $A_v$ denote the set of candidates for which $v$ voted. If $v$ did not vote, let $A_v$ denote the set of candidates for which $v$ would vote if $v$ were to vote. Let $c$ denote the candidate chosen by the voting rule in $S$. $S$ exhibits Representativeness if $c \in \smashoperator{\bigcup\limits_{v \in V}}A_v$ 
 \end{definition}
 
 \begin{lemma}[Cycles Form]
@@ -131,10 +136,14 @@ Suppose that $G$ does not contain a cycle. Then $G$ must consist only of trees, 
 
 \begin{theorem} 
 \label{CFLIT}
-There exists no system $S$ for which the properties Choice of Role, Enfranchisement, and Voters Choose simultaneously hold.
+There exists no system $S$ for which the properties Choice of Role, Enfranchisement, and Determinism, and Representativeness simultaneously hold.
 \end{theorem}
-\begin{proof}
-Let us assume that all voters proxy, which is allowed under Choice of Role. We have from Lemma \ref{cyclesform} that $G$ must contain a cycle. 
+\begin{proof} We prove by counterexample:
+
+Let us assume that all voters proxy, which is allowed under Choice of Role. We have from Lemma \ref{cyclesform} that $G$ must contain at least one cycle and no voters. By enfranchisement, this cycle must have some voting power, and by determinism and representativeness, this voting power may not go to an arbitrary candidate. 
+
+However, let $A = \smashoperator{\bigcup\limits_{v \in V}}A_v$ as defined in Representativeness. S must select a candidate in $A$, but by determinism and representativeness, it cannot pick one arbitrarily and there is no information to pick a candidate without forcing a voter to vote instead of proxy. Therefore, these properties are incompatible even with arbitrary $S$.
+
 \end{proof}
 
 \subsection{Centrality}
